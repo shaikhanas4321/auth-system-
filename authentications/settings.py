@@ -29,6 +29,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+AUTH_USER_MODEL = "accounts.User"
 
 INSTALLED_APPS = [
     'accounts',
@@ -55,7 +56,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'authetications.urls'
+ROOT_URLCONF = 'authentications.urls'
 
 TEMPLATES = [
     {
@@ -72,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'authetications.wsgi.application'
+WSGI_APPLICATION = 'authentications.wsgi.application'
 
 
 # Database
