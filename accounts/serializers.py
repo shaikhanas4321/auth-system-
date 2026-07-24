@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth import authenticate 
 from .models import User,emailOTP
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -42,6 +43,26 @@ class verifyOTPserializer(serializers.Serializer):
         return data
  
     
+class loginserializers(serializers.Serializer):
+    email=serializers.EmailField()
+    password=serializers.CharField(write_only=True, style={"input_type":"password"})
+    def validate(self , data):
+        email=data.get("email")
+        password=data.get("password")
+        try:
+            user_obj =  User.objects.get(email=email)
+        except User.DoesNotExist:
+            raise serializers.ValidationError("Invalid email or password.")
+        user = authenticate(username=email, password=password)
+        if user is None:
+            raise serializers.ValidationError("email or password invalid")
+        if not user.is_active:
+            raise serializers.ValidationError("user is not active")
+        if not user.email_verified:
+            raise serializers.ValidationError("email not verified")
+        data["user"] = user
+        return data
+        
 
     
     

@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework import status , permissions
-from accounts.serializers import RegisterSerializer , sendOTPserializer ,verifyOTPserializer
+from accounts.serializers import RegisterSerializer , sendOTPserializer ,verifyOTPserializer , loginserializers
 from accounts.utils import email_verification
 # Create your views here.
 
@@ -51,3 +51,16 @@ class VerifyOTP(APIView):
 
         return Response({"message": "Email verified successfully."}, status=status.HTTP_200_OK)
         
+class loginView(APIView):
+    permission_classes = [permissions.AllowAny]
+    def post(self , request):
+        serializer = loginserializers(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data["user"] 
+        return Response({
+            "message": "Login successful",
+            "user_id": user.id,
+            "username": user.username,
+            "email": user.email,
+        }, status=status.HTTP_200_OK)
+       
