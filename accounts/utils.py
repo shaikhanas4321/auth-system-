@@ -9,7 +9,7 @@ def email_verification(user):
     otp_obj, created = emailOTP.objects.update_or_create(
     user=user,
     defaults={"otp": otp}
-)
+)   
     send_mail(
         subject="Your OTP Code",
         message=f"Your verification OTP is: {otp}. It expires in 5 minutes.",
