@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import status , permissions
 from accounts.serializers import RegisterSerializer , sendOTPserializer ,verifyOTPserializer , loginserializers
 from accounts.utils import email_verification
+from rest_framework_simplejwt.tokens import RefreshToken
 # Create your views here.
 
 @api_view(["POST"])
@@ -57,10 +58,10 @@ class loginView(APIView):
         serializer = loginserializers(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"] 
+        refresh = RefreshToken.for_user(user)
         return Response({
-            "message": "Login successful",
-            "user_id": user.id,
-            "username": user.username,
-            "email": user.email,
-        }, status=status.HTTP_200_OK)
+            "refresh":str(refresh),
+            "access":str(refresh.access_token)
+        })
+        
        
