@@ -64,4 +64,11 @@ class loginView(APIView):
             "access":str(refresh.access_token)
         })
         
-       
+class profileView(APIView):
+    permission_classes=[permissions.IsAuthenticated]
+    def get(self , request):
+        return Response({
+            "message": "You are authenticated!",
+            "user_id": request.user.id,
+            "email": request.user.email,
+        })       
