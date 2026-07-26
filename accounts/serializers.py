@@ -65,5 +65,6 @@ class loginserializers(serializers.Serializer):
         
 
     
-    
+class logoutserializers(serializers.Serializer):
+    refresh = serializers.CharField() 
 

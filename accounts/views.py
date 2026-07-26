@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework import status , permissions
-from accounts.serializers import RegisterSerializer , sendOTPserializer ,verifyOTPserializer , loginserializers
+from accounts.serializers import *
 from accounts.utils import email_verification
 from rest_framework_simplejwt.tokens import RefreshToken
 # Create your views here.
@@ -72,3 +72,16 @@ class profileView(APIView):
             "user_id": request.user.id,
             "email": request.user.email,
         })       
+
+class logoutView(APIView):
+    permission_classes=[permissions.IsAuthenticated]
+    def post(self , request):
+        serializer= logoutserializers(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        refresh_token=serializer.validated_data["refresh"]
+        token = RefreshToken(refresh_token)
+        token.blacklist()
+        return Response(
+            {"message": "Logout successful"},
+            status=status.HTTP_205_RESET_CONTENT
+        )

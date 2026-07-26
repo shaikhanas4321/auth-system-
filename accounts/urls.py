@@ -9,5 +9,6 @@ urlpatterns=[
     path("send-otp/",sendOTP.as_view(),name="sendOTP"),
     path("login/",loginView.as_view(),name="login"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("profile/",profileView.as_view(),name="profile")
+    path("profile/",profileView.as_view(),name="profile"),
+    path("logout/",logoutView.as_view(),name="logout")
 ]
