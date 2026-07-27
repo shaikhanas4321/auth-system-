@@ -85,3 +85,30 @@ class logoutView(APIView):
             {"message": "Logout successful"},
             status=status.HTTP_205_RESET_CONTENT
         )
+
+class ResetPasswordView(APIView):
+    permission_classes=[permissions.AllowAny]
+    def post(self,request):
+        serializer=ResetPasswordSerializers(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data["user"]
+        user.set_password(serializer.validated_data["NewPassword"])
+        user.save()
+        return Response({
+            "message":"password reset successfull"
+        },status=status.HTTP_200_OK)
+
+
+
+class ForgetPasswordView(APIView):
+     permission_classes = [permissions.AllowAny]
+     def post(self , request):
+            serializer = sendOTPserializer(data = request.data)
+            serializer.is_valid(raise_exception=True)
+            email = serializer.validated_data["email"]
+            try:
+              user =  User.objects.get(email=email)
+            except User.DoesNotExist:
+                return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND) 
+            email_verification(user)
+            return Response({"message": "OTP sent to your email."}, status=status.HTTP_200_OK)
