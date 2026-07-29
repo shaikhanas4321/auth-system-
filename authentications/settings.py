@@ -33,8 +33,13 @@ AUTH_USER_MODEL = "accounts.User"
 
 INSTALLED_APPS = [
     'accounts',
+    'django.contrib.sites',
     'rest_framework',
     "rest_framework_simplejwt.token_blacklist",
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -61,6 +66,7 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
+    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -119,7 +125,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_REQUIRED = True
+SITE_ID = 1
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
