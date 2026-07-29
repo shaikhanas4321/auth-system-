@@ -1,4 +1,5 @@
 from django.db import models
+from .managers import UserManager
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.utils import timezone
@@ -9,6 +10,7 @@ class User(AbstractUser):
     email_verified = models.BooleanField(default=False)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+    objects=UserManager()
 
 class emailOTP(models.Model):
     user=models.OneToOneField(settings.AUTH_USER_MODEL,on_delete=models.CASCADE ,related_name="email_otp")
