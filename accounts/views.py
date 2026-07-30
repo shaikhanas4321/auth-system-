@@ -8,6 +8,8 @@ from rest_framework import status , permissions
 from accounts.serializers import *
 from accounts.utils import email_verification
 from rest_framework_simplejwt.tokens import RefreshToken
+from dj_rest_auth.registration.views import SocialLoginView
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 # Create your views here.
 
 @api_view(["POST"])
@@ -112,3 +114,6 @@ class ForgetPasswordView(APIView):
                 return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND) 
             email_verification(user)
             return Response({"message": "OTP sent to your email."}, status=status.HTTP_200_OK)
+
+class GoogleLogin(SocialLoginView):
+    adapter_class = GoogleOAuth2Adapter

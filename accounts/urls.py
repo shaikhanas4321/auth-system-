@@ -12,5 +12,6 @@ urlpatterns=[
     path("profile/",profileView.as_view(),name="profile"),
     path("logout/",logoutView.as_view(),name="logout"),
     path("forget-password/",ForgetPasswordView.as_view(),name="forget-password"),
-    path("reset-password/",ResetPasswordView.as_view(),name="reset-password")
+    path("reset-password/",ResetPasswordView.as_view(),name="reset-password"),
+    path("google-login/", GoogleLogin.as_view(), name="google-login") 
 ]
